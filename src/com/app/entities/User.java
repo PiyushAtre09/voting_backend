@@ -1,6 +1,7 @@
 package com.app.entities;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 public class User {
@@ -13,7 +14,6 @@ public class User {
 	private String role;
 	
 	public User(String fn, String ln, String email, String pass, Date dob, String role) {
-		super();
 		this.fn = fn;
 		this.ln = ln;
 		this.email = email;
@@ -22,6 +22,7 @@ public class User {
 		this.status = false;
 		this.role = role;
 	}
+
 
 	public String getFn() {
 		return fn;

@@ -5,20 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.app.entities.User;
+
 import static dbutils.dbutils.*;
 
 public class UserDaoImpl implements userDao {
 	
 	private Connection cn;
-	private static PreparedStatement pst1;
+	private static PreparedStatement pst1,pst2,pst3,pst4;
 	
 	public UserDaoImpl() throws SQLException {
 		cn = openConn();
 		
 		pst1 = cn.prepareStatement("select * from users");
+		pst2 = cn.prepareStatement("insert into users values (default,?,?,?,?,?,?,?)");
+		pst3 = cn.prepareStatement("delete from users where id=?");
+		pst4 = cn.prepareStatement("update users set password=? where email=? and password=?");
 	}
 		
-	public static void dispAll() throws SQLException {
+	public void dispAll() throws SQLException {
 		ResultSet rst = pst1.executeQuery();
 		
 		while (rst.next()) {
@@ -27,6 +32,54 @@ public class UserDaoImpl implements userDao {
 					+ rst.getString(4) + " " + rst.getString(5) + " " + rst.getDate(6) + " " + rst.getBoolean(7)
 					+ " " + rst.getString(8));
 		}
+
 	}
+
+	public String insert(User user) throws SQLException {
+		// TODO Auto-generated method stub
+		pst2.setString(1, user.getFn());
+		pst2.setString(2, user.getLn());
+		pst2.setString(3, user.getEmail());
+		pst2.setString(4, user.getPass());
+		pst2.setDate(5, user.getDob());
+		pst2.setBoolean(6, user.isStatus());
+		pst2.setString(7, user.getRole());
+		
+		if(pst2.executeUpdate()==1) {
+			return "user inserted";
+		}
+		
+		return "err";
+	}
+
+	public String deleteuser(int voterId) throws SQLException {
+		pst3.setInt(1, voterId);
+		
+		if(pst3.executeUpdate()==1) {
+			return "user deleted";
+		}
+		return "Invalid id";
+	}
+
+	public void changePass(String email, String pass, String newpass) throws SQLException {
+		// TODO Auto-generated method stub
+		pst4.setString(1, newpass);
+		pst4.setString(2, email);
+		pst4.setString(3, pass);
+		
+		if(pst4.executeUpdate()==1) {
+			System.out.println("pass change");
+		}
+		else {
+			System.out.println("err");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 		
 }
