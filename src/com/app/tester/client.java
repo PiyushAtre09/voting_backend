@@ -8,6 +8,8 @@ import com.app.dao.CandidatesDaoImpl;
 import com.app.dao.UserDaoImpl;
 import com.app.entities.User;
 
+import static com.app.tester.UserSignedIn.*;
+
 public class client {
 
 	public static void main(String args[]) throws SQLException {
@@ -16,7 +18,7 @@ public class client {
 			CandidatesDaoImpl canDao = new CandidatesDaoImpl();
 
 			while (true) {
-				System.out.println("1.Display all");
+				System.out.println("1.Display all voters");
 				switch(sc.nextInt()) {
 				case 1:
 					userDao.dispAll();
@@ -26,6 +28,10 @@ public class client {
 					userDao.insert(user);
 					break;
 				case 3:
+					User user1 = userDao.userSign(sc.next(), sc.next());
+					SignedIn(user1,userDao,canDao);
+					break;
+				case 8:
 					userDao.deleteuser(sc.nextInt());
 					break;
 				case 4:
@@ -34,6 +40,7 @@ public class client {
 				case 5:
 					canDao.getCandidates();
 					break;
+				case 6:
 				
 				}
 			}

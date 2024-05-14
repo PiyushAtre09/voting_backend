@@ -9,12 +9,14 @@ import java.sql.SQLException;
 
 public class CandidatesDaoImpl {
 	private Connection cn;
-	private static PreparedStatement pst1;
+	private static PreparedStatement pst1,pst2;
+	
 	
 	public CandidatesDaoImpl() throws SQLException {
 		cn = openConn();
 		
 		pst1 = cn.prepareStatement("select * from candidates");
+		pst2 = cn.prepareStatement("update candidates set votes=votes+1 where id=?");
 	}
 	
 	public void getCandidates() throws SQLException {
@@ -24,6 +26,11 @@ public class CandidatesDaoImpl {
 			System.out.println(rst.getInt(1)+" "+rst.getString(2)+" "+rst.getString(3)+" "+rst.getInt(4));
 		}
 		
+	}
+
+	public void updateVotes(int voterid) throws SQLException {
+		pst2.setInt(1, voterid);
+		pst2.executeUpdate();
 	}
 	
 }
